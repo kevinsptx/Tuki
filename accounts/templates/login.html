@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Iniciar sesión | Tuki</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    /* Para cambiar el rojo de toda la página, cambia solo estas 2 líneas */
+    :root {
+        --rojo: #e50914;
+        --rojo-claro: #f6121d;
+
+        --negro: #000000;
+        --campo: #1d1d21;
+        --campo-borde: #3b3b42;
+        --gris: #8c8c96;
+        --texto: #ffffff;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        min-height: 100vh;
+        background: var(--negro);
+        color: var(--texto);
+        font-family: "DM Sans", sans-serif;
+        overflow-x: hidden;
+    }
+
+    /* ---------- Fondo: pared de pósters ---------- */
+    .pared-caja {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .pared {
+        position: absolute;
+        inset: -25%;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 10px;
+        transform: rotate(-10deg);
+        opacity: 0.6;
+        animation: deriva 50s ease-in-out infinite alternate;
+    }
+
+    .pared i {
+        aspect-ratio: 2 / 3;
+        border-radius: 6px;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    .velo {
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background:
+            radial-gradient(60% 45% at 50% 105%, rgba(229, 9, 20, 0.35), transparent 70%),
+            radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.92) 100%);
+    }
+
+    /* ---------- Logo ---------- */
+    .cabecera {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 3;
+        padding: 26px 48px;
+    }
+
+    .logo {
+        display: inline-block;
+        font-family: "Bebas Neue", Impact, sans-serif;
+        font-size: 52px;
+        line-height: 1;
+        letter-spacing: 3px;
+        color: var(--rojo);
+        text-shadow: 0 4px 24px rgba(229, 9, 20, 0.45);
+    }
+
+    /* ---------- Caja del login ---------- */
+    .escena {
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 100px 16px 40px;
+    }
+
+    .caja {
+        width: 100%;
+        max-width: 440px;
+        padding: 52px 60px 44px;
+        background: rgba(0, 0, 0, 0.78);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        animation: entra 0.6s ease both;
+    }
+
+    .caja h1 {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        margin-bottom: 6px;
+    }
+
+    .subtitulo {
+        color: var(--gris);
+        font-size: 14px;
+        margin-bottom: 26px;
+    }
+
+    /* ---------- Campos con etiqueta flotante ---------- */
+    .campo {
+        position: relative;
+        margin-bottom: 16px;
+    }
+
+    .campo input {
+        width: 100%;
+        height: 58px;
+        padding: 22px 16px 6px;
+        background: var(--campo);
+        border: 1px solid var(--campo-borde);
+        border-radius: 6px;
+        color: var(--texto);
+        font-family: "DM Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .campo input:focus {
+        border-color: rgba(255, 255, 255, 0.7);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+    }
+
+    .campo label {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--gris);
+        font-size: 16px;
+        pointer-events: none;
+        transition: all 0.15s ease;
+    }
+
+    .campo input:focus + label,
+    .campo input:not(:placeholder-shown) + label,
+    .campo input:-webkit-autofill + label {
+        top: 14px;
+        transform: none;
+        font-size: 12px;
+    }
+
+    /* Para que el autocompletado del navegador no pinte el campo de amarillo o azul */
+    .campo input:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px var(--campo) inset;
+        -webkit-text-fill-color: var(--texto);
+        caret-color: var(--texto);
+    }
+
+    .campo-clave {
+        padding-right: 84px !important;
+    }
+
+    .ver {
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 12px 10px;
+        border: none;
+        background: transparent;
+        color: var(--gris);
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .ver:hover {
+        color: var(--texto);
+    }
+
+    .mensaje-error {
+        margin-bottom: 16px;
+        padding: 12px 14px;
+        border-left: 3px solid var(--rojo);
+        border-radius: 6px;
+        background: rgba(229, 9, 20, 0.14);
+        color: #ffb3b6;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .entrar {
+        width: 100%;
+        height: 52px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 6px;
+        background: var(--rojo);
+        color: #ffffff;
+        font-family: "DM Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .entrar:hover {
+        background: var(--rojo-claro);
+    }
+
+    .entrar:active {
+        transform: scale(0.98);
+    }
+
+    .entrar:focus-visible,
+    .ver:focus-visible {
+        outline: 2px solid #ffffff;
+        outline-offset: 3px;
+    }
+
+    .pie {
+        margin-top: 28px;
+        color: var(--gris);
+        font-size: 13px;
+        text-align: center;
+    }
+
+    @keyframes entra {
+        from {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+    }
+
+    @keyframes deriva {
+        from { transform: rotate(-10deg) translateY(0); }
+        to { transform: rotate(-10deg) translateY(-50px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+
+    /* ---------- Celular ---------- */
+    @media (max-width: 640px) {
+        .cabecera {
+            padding: 24px 16px 0;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 44px;
+        }
+
+        .escena {
+            align-items: flex-start;
+            padding: 96px 14px 32px;
+        }
+
+        .caja {
+            padding: 30px 20px 28px;
+        }
+
+        .caja h1 {
+            font-size: 28px;
+        }
+
+        .pared {
+            opacity: 0.45;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="pared-caja" aria-hidden="true">
+    <div class="pared" id="pared"></div>
+</div>
+<div class="velo" aria-hidden="true"></div>
+
+<header class="cabecera">
+    <span class="logo">TUKI</span>
+</header>
+
+<main class="escena">
+
+    <section class="caja">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <h1>Inicia sesión</h1>
+            <p class="subtitulo">Tu lista de pelis, lo que viste y lo que falta.</p>
+
+            {% if form.errors %}
+                <div class="mensaje-error">
+                    El usuario o la contraseña no son correctos.
+                </div>
+            {% endif %}
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mensaje-error">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="campo">
+                <input
+                    type="text"
+                    name="username"
+                    id="id_username"
+                    placeholder=" "
+                    autocomplete="username"
+                    autocapitalize="none"
+                    autocorrect="off"
+                    spellcheck="false"
+                    required
+                >
+                <label for="id_username">Usuario</label>
+            </div>
+
+            <div class="campo">
+                <input
+                    type="password"
+                    name="password"
+                    id="id_password"
+                    class="campo-clave"
+                    placeholder=" "
+                    autocomplete="current-password"
+                    required
+                >
+                <label for="id_password">Contraseña</label>
+
+                <button type="button" class="ver" onclick="togglePassword()">
+                    Ver
+                </button>
+            </div>
+
+            <button type="submit" class="entrar">
+                Entrar
+            </button>
+
+            <div class="pie">
+                Hecho para ver pelis y no olvidarlas.
+            </div>
+
+        </form>
+
+    </section>
+
+</main>
+
+<script>
+    function togglePassword() {
+        const password = document.getElementById('id_password');
+        const button = document.querySelector('.ver');
+
+        if (password.type === 'password') {
+            password.type = 'text';
+            button.textContent = 'Ocultar';
+        } else {
+            password.type = 'password';
+            button.textContent = 'Ver';
+        }
+    }
+
+    // Fondo: crea la pared de pósters con colores oscuros distintos cada vez que se abre la página
+    (function () {
+        const pared = document.getElementById('pared');
+        const tonos = [0, 350, 20, 40, 210, 260];
+
+        for (let i = 0; i < 160; i++) {
+            const poster = document.createElement('i');
+            const h = tonos[Math.floor(Math.random() * tonos.length)] + Math.floor(Math.random() * 20);
+            const l = 14 + Math.random() * 10;
+
+            poster.style.background =
+                'linear-gradient(160deg, hsl(' + h + ' 55% ' + (l + 10) + '%), hsl(' + h + ' 60% ' + (l - 5) + '%))';
+
+            pared.appendChild(poster);
+        }
+    })();
+</script>
+
+</body>
+</html>

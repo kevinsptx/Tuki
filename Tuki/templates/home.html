@@ -1,0 +1,893 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}
+
+Inicio | Tuki
+
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    .inicio {
+
+        animation: aparecer 0.5s ease both;
+
+    }
+
+
+    /* Encabezado */
+
+    .saludo {
+
+        margin-bottom: 34px;
+
+    }
+
+    .saludo-pequeno {
+
+        color: var(--gris);
+
+        font-size: 14px;
+
+        margin-bottom: 6px;
+
+    }
+
+    .saludo h1 {
+
+        font-size: 34px;
+
+        line-height: 1.1;
+
+        font-weight: 700;
+
+        letter-spacing: -0.8px;
+
+    }
+
+    .saludo h1 span {
+
+        color: var(--rojo);
+
+    }
+
+    .saludo p {
+
+        margin-top: 9px;
+
+        color: var(--gris);
+
+        font-size: 14px;
+
+    }
+
+
+    /* Botón principal */
+
+    .boton-principal {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 8px;
+
+        height: 45px;
+
+        padding: 0 18px;
+
+        border-radius: 6px;
+
+        background: var(--rojo);
+
+        color: white;
+
+        font-size: 14px;
+
+        font-weight: 700;
+
+        transition: background 0.2s ease, transform 0.1s ease;
+
+    }
+
+    .boton-principal:hover {
+
+        background: var(--rojo-claro);
+
+    }
+
+    .boton-principal:active {
+
+        transform: scale(0.98);
+
+    }
+
+    .boton-plus {
+
+        font-size: 20px;
+
+        line-height: 1;
+
+        font-weight: 400;
+
+    }
+
+
+    /* Estadísticas */
+
+    .estadisticas {
+
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 14px;
+
+        margin-bottom: 42px;
+
+    }
+
+    .estadistica {
+
+        padding: 22px;
+
+        background: rgba(20, 20, 22, 0.9);
+
+        border: 1px solid var(--borde);
+
+        border-radius: 9px;
+
+    }
+
+    .estadistica-numero {
+
+        font-family: "Bebas Neue", Impact, sans-serif;
+
+        font-size: 36px;
+
+        line-height: 1;
+
+        color: white;
+
+    }
+
+    .estadistica-nombre {
+
+        margin-top: 6px;
+
+        color: var(--gris);
+
+        font-size: 12px;
+
+    }
+
+
+    /* Secciones */
+
+    .seccion {
+
+        margin-bottom: 42px;
+
+    }
+
+    .seccion-cabecera {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        margin-bottom: 17px;
+
+    }
+
+    .seccion-titulo {
+
+        font-family: "Bebas Neue", Impact, sans-serif;
+
+        font-size: 25px;
+
+        letter-spacing: 1px;
+
+    }
+
+    .seccion-enlace {
+
+        color: var(--gris);
+
+        font-size: 12px;
+
+        font-weight: 600;
+
+        transition: color 0.2s ease;
+
+    }
+
+    .seccion-enlace:hover {
+
+        color: white;
+
+    }
+
+
+    /* Películas */
+
+    .peliculas {
+
+        display: grid;
+
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+
+        gap: 16px;
+
+    }
+
+    .pelicula {
+
+        min-width: 0;
+
+        background: #141416;
+
+        border: 1px solid var(--borde);
+
+        border-radius: 8px;
+
+        overflow: hidden;
+
+        transition: transform 0.2s ease, border-color 0.2s ease;
+
+    }
+
+    .pelicula:hover {
+
+        transform: translateY(-3px);
+
+        border-color: #3a3a40;
+
+    }
+
+    .pelicula-poster {
+
+        aspect-ratio: 2 / 3;
+
+        background:
+
+            linear-gradient(
+                145deg,
+                #242428,
+                #111113
+            );
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        color: #3f3f45;
+
+        font-family: "Bebas Neue", Impact, sans-serif;
+
+        font-size: 25px;
+
+        letter-spacing: 2px;
+
+    }
+
+    .pelicula-info {
+
+        padding: 13px;
+
+    }
+
+    .pelicula-titulo {
+
+        font-size: 14px;
+
+        font-weight: 700;
+
+        white-space: nowrap;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+    }
+
+    .pelicula-datos {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 8px;
+
+        margin-top: 7px;
+
+    }
+
+    .pelicula-año {
+
+        color: var(--gris);
+
+        font-size: 11px;
+
+    }
+
+    .puntuacion {
+
+        color: #ffffff;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+    }
+
+    .puntuacion span {
+
+        color: var(--rojo);
+
+    }
+
+
+    /* Estado vacío */
+
+    .vacio {
+
+        padding: 45px 25px;
+
+        background: rgba(20, 20, 22, 0.7);
+
+        border: 1px dashed #303035;
+
+        border-radius: 9px;
+
+        text-align: center;
+
+    }
+
+    .vacio-icono {
+
+        width: 48px;
+
+        height: 48px;
+
+        margin: 0 auto 15px;
+
+        border-radius: 50%;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: rgba(229, 9, 20, 0.1);
+
+        color: var(--rojo);
+
+        font-size: 21px;
+
+    }
+
+    .vacio h3 {
+
+        margin-bottom: 6px;
+
+        font-size: 16px;
+
+    }
+
+    .vacio p {
+
+        max-width: 380px;
+
+        margin: 0 auto;
+
+        color: var(--gris);
+
+        font-size: 13px;
+
+        line-height: 1.5;
+
+    }
+
+
+    /* Responsive */
+
+    @media (max-width: 1000px) {
+
+        .peliculas {
+
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+
+        }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+        .saludo {
+
+            margin-bottom: 27px;
+
+        }
+
+        .saludo h1 {
+
+            font-size: 29px;
+
+        }
+
+        .estadisticas {
+
+            gap: 8px;
+
+            margin-bottom: 34px;
+
+        }
+
+        .estadistica {
+
+            padding: 16px;
+
+        }
+
+        .estadistica-numero {
+
+            font-size: 29px;
+
+        }
+
+        .estadistica-nombre {
+
+            font-size: 10px;
+
+        }
+
+        .peliculas {
+
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+
+            gap: 12px;
+
+        }
+
+    }
+
+
+    @media (max-width: 430px) {
+
+        .saludo h1 {
+
+            font-size: 27px;
+
+        }
+
+        .boton-principal {
+
+            width: 100%;
+
+        }
+
+        .estadistica {
+
+            padding: 14px 10px;
+
+        }
+
+        .estadistica-numero {
+
+            font-size: 27px;
+
+        }
+
+        .seccion-titulo {
+
+            font-size: 22px;
+
+        }
+
+        .pelicula-info {
+
+            padding: 10px;
+
+        }
+
+    }
+
+
+    @keyframes aparecer {
+
+        from {
+
+            opacity: 0;
+
+            transform: translateY(12px);
+
+        }
+
+        to {
+
+            opacity: 1;
+
+            transform: translateY(0);
+
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="inicio">
+
+
+<!-- Saludo -->
+
+<section class="saludo">
+
+    <div class="saludo-pequeno">
+
+        Tu registro personal de películas
+
+    </div>
+
+
+    <h1>
+
+        Hola, <span>{{ user.username }}</span>
+
+    </h1>
+
+
+    <p>
+
+        Registra lo que has visto y lleva el control de las películas que quieres ver.
+
+    </p>
+
+</section>
+
+
+<!-- Registrar película -->
+
+<div style="margin-bottom: 35px;">
+
+    <a href="#" class="boton-principal">
+
+        <span class="boton-plus">
+            +
+        </span>
+
+        Registrar película
+
+    </a>
+
+</div>
+
+
+<!-- Estadísticas -->
+
+<section class="estadisticas">
+
+
+    <div class="estadistica">
+
+        <div class="estadistica-numero">
+
+            {{ total_peliculas|default:"0" }}
+
+        </div>
+
+        <div class="estadistica-nombre">
+
+            Películas registradas
+
+        </div>
+
+    </div>
+
+
+    <div class="estadistica">
+
+        <div class="estadistica-numero">
+
+            {{ total_vistas|default:"0" }}
+
+        </div>
+
+        <div class="estadistica-nombre">
+
+            Películas vistas
+
+        </div>
+
+    </div>
+
+
+    <div class="estadistica">
+
+        <div class="estadistica-numero">
+
+            {{ total_pendientes|default:"0" }}
+
+        </div>
+
+        <div class="estadistica-nombre">
+
+            Pendientes
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- Vistas recientes -->
+
+<section class="seccion">
+
+
+    <div class="seccion-cabecera">
+
+        <h2 class="seccion-titulo">
+
+            VISTAS RECIENTES
+
+        </h2>
+
+
+        <a href="#" class="seccion-enlace">
+
+            Ver todas →
+
+        </a>
+
+    </div>
+
+
+    {% if peliculas_vistas %}
+
+
+        <div class="peliculas">
+
+
+            {% for pelicula in peliculas_vistas %}
+
+
+                <article class="pelicula">
+
+
+                    <div class="pelicula-poster">
+
+                        TUKI
+
+                    </div>
+
+
+                    <div class="pelicula-info">
+
+
+                        <div class="pelicula-titulo">
+
+                            {{ pelicula.titulo }}
+
+                        </div>
+
+
+                        <div class="pelicula-datos">
+
+
+                            <span class="pelicula-año">
+
+                                {{ pelicula.año }}
+
+                            </span>
+
+
+                            {% if pelicula.puntuacion %}
+
+                                <span class="puntuacion">
+
+                                    <span>★</span>
+
+                                    {{ pelicula.puntuacion }}/10
+
+                                </span>
+
+                            {% endif %}
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </article>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    {% else %}
+
+
+        <div class="vacio">
+
+
+            <div class="vacio-icono">
+
+                ▶
+
+            </div>
+
+
+            <h3>
+
+                Todavía no has registrado ninguna película vista
+
+            </h3>
+
+
+            <p>
+
+                Cuando registres una película como vista,
+
+                aparecerá aquí para que puedas llevar tu historial.
+
+            </p>
+
+
+        </div>
+
+
+    {% endif %}
+
+
+</section>
+
+
+<!-- Pendientes -->
+
+<section class="seccion">
+
+
+    <div class="seccion-cabecera">
+
+        <h2 class="seccion-titulo">
+
+            PENDIENTES
+
+        </h2>
+
+
+        <a href="#" class="seccion-enlace">
+
+            Ver todas →
+
+        </a>
+
+    </div>
+
+
+    {% if peliculas_pendientes %}
+
+
+        <div class="peliculas">
+
+
+            {% for pelicula in peliculas_pendientes %}
+
+
+                <article class="pelicula">
+
+
+                    <div class="pelicula-poster">
+
+                        TUKI
+
+                    </div>
+
+
+                    <div class="pelicula-info">
+
+
+                        <div class="pelicula-titulo">
+
+                            {{ pelicula.titulo }}
+
+                        </div>
+
+
+                        <div class="pelicula-datos">
+
+
+                            <span class="pelicula-año">
+
+                                {{ pelicula.año }}
+
+                            </span>
+
+
+                            <span class="puntuacion">
+
+                                Pendiente
+
+                            </span>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </article>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    {% else %}
+
+
+        <div class="vacio">
+
+
+            <div class="vacio-icono">
+
+                +
+
+            </div>
+
+
+            <h3>
+
+                No tienes películas pendientes
+
+            </h3>
+
+
+            <p>
+
+                Agrega películas que quieras ver después
+
+                y aparecerán aquí.
+
+            </p>
+
+
+        </div>
+
+
+    {% endif %}
+
+
+</section>
+
+
+</div>
+
+{% endblock %}
