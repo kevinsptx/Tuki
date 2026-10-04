@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>{% block title %}Tuki{% endblock %}</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+    :root {
+
+        --rojo: #e50914;
+        --rojo-claro: #f6121d;
+
+        --negro: #000000;
+        --fondo: #0b0b0d;
+
+        --panel: #141416;
+        --campo: #1d1d21;
+
+        --borde: #29292e;
+
+        --gris: #8c8c96;
+        --texto: #ffffff;
+
+    }
+
+    * {
+
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+
+    }
+
+    body {
+
+        min-height: 100vh;
+
+        background: var(--fondo);
+
+        color: var(--texto);
+
+        font-family: "DM Sans", sans-serif;
+
+        overflow-x: hidden;
+
+    }
+
+    a {
+
+        color: inherit;
+        text-decoration: none;
+
+    }
+
+    button,
+    input {
+
+        font-family: inherit;
+
+    }
+
+
+    /* Fondo */
+
+    .fondo {
+
+        position: fixed;
+
+        inset: 0;
+
+        z-index: -2;
+
+        background:
+
+            radial-gradient(
+                circle at 85% 10%,
+                rgba(229, 9, 20, 0.10),
+                transparent 28%
+            ),
+
+            radial-gradient(
+                circle at 10% 90%,
+                rgba(229, 9, 20, 0.06),
+                transparent 30%
+            ),
+
+            #0b0b0d;
+
+    }
+
+    .fondo::after {
+
+        content: "";
+
+        position: absolute;
+
+        inset: 0;
+
+        background:
+
+            linear-gradient(
+                135deg,
+                transparent 0%,
+                rgba(255,255,255,0.015) 50%,
+                transparent 100%
+            );
+
+    }
+
+
+    /* Layout */
+
+    .app {
+
+        min-height: 100vh;
+
+        display: flex;
+
+    }
+
+
+    /* Sidebar */
+
+    .sidebar {
+
+        position: fixed;
+
+        left: 0;
+        top: 0;
+        bottom: 0;
+
+        width: 235px;
+
+        padding: 28px 18px;
+
+        background: rgba(10, 10, 12, 0.96);
+
+        border-right: 1px solid rgba(255, 255, 255, 0.07);
+
+        display: flex;
+
+        flex-direction: column;
+
+        z-index: 20;
+
+    }
+
+
+    /* Logo */
+
+    .logo {
+
+        display: inline-block;
+
+        margin: 0 12px 42px;
+
+        font-family: "Bebas Neue", Impact, sans-serif;
+
+        font-size: 48px;
+
+        line-height: 1;
+
+        letter-spacing: 3px;
+
+        color: var(--rojo);
+
+        text-shadow: 0 4px 24px rgba(229, 9, 20, 0.35);
+
+    }
+
+
+    /* Títulos del menú */
+
+    .menu-titulo {
+
+        margin: 0 12px 10px;
+
+        color: #66666d;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        letter-spacing: 1.5px;
+
+        text-transform: uppercase;
+
+    }
+
+
+    /* Menú */
+
+    .menu {
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 4px;
+
+    }
+
+    .menu a {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        min-height: 45px;
+
+        padding: 0 12px;
+
+        border-radius: 7px;
+
+        color: #a5a5ad;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        transition: background 0.2s ease, color 0.2s ease;
+
+    }
+
+    .menu a:hover {
+
+        background: #19191c;
+
+        color: #ffffff;
+
+    }
+
+    .menu a.activo {
+
+        background: rgba(229, 9, 20, 0.12);
+
+        color: #ffffff;
+
+    }
+
+    .menu a.activo .icono {
+
+        color: var(--rojo);
+
+    }
+
+
+    /* Iconos */
+
+    .icono {
+
+        width: 22px;
+
+        text-align: center;
+
+        color: #77777f;
+
+        font-size: 17px;
+
+    }
+
+
+    /* Usuario */
+
+    .usuario-menu {
+
+        margin-top: auto;
+
+    }
+
+    .usuario {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 11px;
+
+        padding: 11px 12px;
+
+        margin-bottom: 6px;
+
+        border-radius: 8px;
+
+        background: #141416;
+
+    }
+
+    .avatar {
+
+        width: 34px;
+
+        height: 34px;
+
+        border-radius: 50%;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: var(--rojo);
+
+        color: white;
+
+        font-size: 14px;
+
+        font-weight: 700;
+
+    }
+
+    .usuario-info {
+
+        min-width: 0;
+
+    }
+
+    .usuario-nombre {
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        white-space: nowrap;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+    }
+
+    .usuario-texto {
+
+        margin-top: 2px;
+
+        color: #6f6f77;
+
+        font-size: 11px;
+
+    }
+
+usuario-menu form { margin: 0; } .cerrar { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px; border: none; border-radius: 7px; background: transparent; color: #85858c; font-family: inherit; font-size: 13px; font-weight: 500; text-align: left; cursor: pointer; transition: background 0.2s ease, color 0.2s ease; } .cerrar::before { content: "↪"; font-size: 17px; color: #66666d; transition: color 0.2s ease; } .cerrar:hover { background: rgba(229, 9, 20, 0.08); color: #ffffff; } .cerrar:hover::before { color: var(--rojo); }
+
+    /* Contenido */
+
+    .contenido {
+
+        width: calc(100% - 235px);
+
+        min-height: 100vh;
+
+        margin-left: 235px;
+
+        padding: 40px 48px;
+
+    }
+
+    .contenido-interno {
+
+        width: 100%;
+
+        max-width: 1250px;
+
+        margin: 0 auto;
+
+    }
+
+
+    /* Barra móvil */
+
+    .barra-movil {
+
+        display: none;
+
+    }
+
+
+    /* Responsive */
+
+    @media (max-width: 800px) {
+
+        .sidebar {
+
+            display: none;
+
+        }
+
+        .contenido {
+
+            width: 100%;
+
+            margin-left: 0;
+
+            padding: 82px 18px 30px;
+
+        }
+
+        .barra-movil {
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+            right: 0;
+
+            height: 64px;
+
+            padding: 0 18px;
+
+            background: rgba(10, 10, 12, 0.96);
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            z-index: 30;
+
+            backdrop-filter: blur(10px);
+
+            -webkit-backdrop-filter: blur(10px);
+
+        }
+
+        .logo-movil {
+
+            font-family: "Bebas Neue", Impact, sans-serif;
+
+            font-size: 34px;
+
+            letter-spacing: 2px;
+
+            color: var(--rojo);
+
+        }
+
+        .usuario-movil {
+
+            width: 34px;
+
+            height: 34px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: var(--rojo);
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+        }
+
+    }
+
+    @media (max-width: 480px) {
+
+        .contenido {
+
+            padding-left: 14px;
+            padding-right: 14px;
+
+        }
+
+    }
+
+</style>
+
+{% block extra_css %}{% endblock %}
+
+
+</head>
+
+<body>
+
+
+<div class="fondo"></div>
+
+
+<!-- Barra móvil -->
+
+<div class="barra-movil">
+
+    <a href="/" class="logo-movil">
+        TUKI
+    </a>
+
+    {% if user.is_authenticated %}
+
+        <div class="usuario-movil">
+
+            {{ user.username|first|upper }}
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<div class="app">
+
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+
+        <a href="/" class="logo">
+            TUKI
+        </a>
+
+
+        <div class="menu-titulo">
+            Biblioteca
+        </div>
+
+
+        <nav class="menu">
+
+            <a href="/" class="activo">
+
+                <span class="icono">
+                    ⌂
+                </span>
+
+                Inicio
+
+            </a>
+
+
+            <a href="#">
+
+                <span class="icono">
+                    ✓
+                </span>
+
+                Vistas
+
+            </a>
+
+
+            <a href="#">
+
+                <span class="icono">
+                    ◷
+                </span>
+
+                Pendientes
+
+            </a>
+
+        </nav>
+
+
+        <!-- Usuario -->
+
+        <div class="usuario-menu">
+
+            {% if user.is_authenticated %}
+
+                <div class="usuario">
+
+                    <div class="avatar">
+
+                        {{ user.username|first|upper }}
+
+                    </div>
+
+
+                    <div class="usuario-info">
+
+                        <div class="usuario-nombre">
+
+                            {{ user.username }}
+
+                        </div>
+
+
+                        <div class="usuario-texto">
+
+                            Mi cuenta
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+
+                <button type="submit" class="cerrar">
+                    Cerrar sesión
+                </button>
+                </form>
+
+            {% endif %}
+
+        </div>
+
+    </aside>
+
+
+    <!-- Contenido -->
+
+    <main class="contenido">
+
+        <div class="contenido-interno">
+
+            {% block content %}
+
+            {% endblock %}
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>
