@@ -1,0 +1,234 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}
+Registrar vista | Tuki
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    .pagina {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .encabezado {
+        margin-bottom: 30px;
+    }
+
+    .encabezado h1 {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .encabezado p {
+        color: var(--gris);
+        font-size: 14px;
+    }
+
+    .formulario {
+        background: var(--panel);
+        border: 1px solid var(--borde);
+        border-radius: 12px;
+        padding: 30px;
+    }
+
+    .campo {
+        margin-bottom: 22px;
+    }
+
+    .campo label {
+        display: block;
+        margin-bottom: 8px;
+        color: #d7d7dc;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .campo input,
+    .campo textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--borde);
+        border-radius: 7px;
+        background: var(--campo);
+        color: white;
+        font-size: 14px;
+        outline: none;
+        transition: border 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .campo input:focus,
+    .campo textarea:focus {
+        border-color: var(--rojo);
+        box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.10);
+    }
+
+    .campo textarea {
+        min-height: 130px;
+        resize: vertical;
+    }
+
+    .ayuda {
+        margin-top: 7px;
+        color: #686870;
+        font-size: 11px;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 10px;
+        margin-top: 28px;
+    }
+
+    .btn {
+        border: none;
+        border-radius: 7px;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .btn-principal {
+        background: var(--rojo);
+        color: white;
+    }
+
+    .btn-principal:hover {
+        background: var(--rojo-claro);
+        transform: translateY(-1px);
+    }
+
+    .btn-cancelar {
+        background: var(--campo);
+        color: #aaaab2;
+        border: 1px solid var(--borde);
+    }
+
+    .btn-cancelar:hover {
+        color: white;
+        border-color: #3a3a40;
+    }
+
+    @media (max-width: 600px) {
+
+        .formulario {
+            padding: 20px;
+        }
+
+        .encabezado h1 {
+            font-size: 27px;
+        }
+
+        .acciones {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="pagina">
+
+
+<div class="encabezado">
+
+    <h1>Registrar vista</h1>
+
+    <p>
+        Agrega una película que ya viste y guarda tu opinión.
+    </p>
+
+</div>
+
+
+<form method="post" class="formulario">
+
+    {% csrf_token %}
+
+
+    <div class="campo">
+
+        <label for="pelicula">
+            Película
+        </label>
+
+        <input
+            type="text"
+            id="pelicula"
+            name="pelicula"
+            placeholder="Ej. Pasión de luna"
+            required
+        >
+
+    </div>
+
+
+    <div class="campo">
+
+        <label for="calificacion">
+            Calificación
+        </label>
+
+        <input
+            type="number"
+            id="calificacion"
+            name="calificacion"
+            min="1"
+            max="10"
+            placeholder="Ej. 8"
+            required
+        >
+
+        <div class="ayuda">
+            Escribe una calificación del 1 al 10.
+        </div>
+
+    </div>
+
+
+    <div class="campo">
+
+        <label for="comentario">
+            Comentario
+        </label>
+
+        <textarea
+            id="comentario"
+            name="comentario"
+            placeholder="¿Qué te pareció la película?"
+        ></textarea>
+
+    </div>
+
+
+    <div class="acciones">
+
+        <button type="submit" class="btn btn-principal">
+            Registrar vista
+        </button>
+
+        <a href="{% url 'vistas' %}" class="btn btn-cancelar">
+            Cancelar
+        </a>
+
+    </div>
+
+</form>
+
+
+</div>
+
+{% endblock %}

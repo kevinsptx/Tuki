@@ -1,32 +1,95 @@
 # 🎬 Tuki
 
-Una app personal para llevar el registro de las películas que veo.
-Guardo lo que vi, lo que quiero ver y qué tal me pareció.
+Tuki es una aplicación personal sencilla para llevar un registro de las películas que veo y de las que quiero ver.
 
-> 🚧 En construcción. Es un proyecto para practicar Django por mi cuenta.
+La aplicación permite guardar las películas que ya vi, ponerles una calificación y escribir un comentario sobre ellas. También puedo guardar películas pendientes para tener una lista de las que quiero ver después.
 
-## Lo que quiero que tenga
+## ✨ Funciones
 
-- [ ] Registrar películas (título, año, puntuación, reseña)
-- [ ] Géneros: varios por película
-- [ ] Estados: pendiente y vista
-- [ ] Editar y eliminar películas
-- [ ] Búsqueda y filtros
-- [ ] Inicio de sesión
-- [ ] Diseño adaptado a celular y computador
+* 🎬 Registrar películas vistas.
+* ⭐ Calificar las películas del 1 al 10.
+* 💬 Agregar un comentario sobre cada película.
+* 📅 Guardar automáticamente la fecha en que se registra una película.
+* 🎞️ Registrar películas pendientes.
+* ✏️ Editar películas vistas y pendientes.
+* 🗑️ Eliminar películas vistas y pendientes.
+* 🔐 Inicio de sesión para acceder a la aplicación.
+* 📱 Diseño adaptado para computador y celular.
 
-## Hecho con
+## 🛠️ Tecnologías
 
-Python, Django, SQLite, HTML y CSS.
+* Python
+* Django
+* SQLite
+* HTML
+* CSS
 
-## Cómo correrlo
+## 📂 Estructura principal
 
-    git clone https://github.com/TU-USUARIO/tuki.git
-    cd tuki
-    python -m venv .venv
-    source .venv/bin/activate
-    pip install -r requirements.txt
-    python manage.py migrate
-    python manage.py runserver
+Tuki está desarrollado con Django y cuenta con las siguientes funcionalidades principales:
 
-Luego abre http://127.0.0.1:8000
+* **Películas vistas:** muestra las películas que ya he visto, su calificación, comentario y fecha.
+* **Películas pendientes:** muestra las películas que quiero ver después.
+* **Registro:** permite agregar nuevas películas vistas o pendientes.
+* **Edición:** permite actualizar la información registrada.
+* **Eliminación:** permite eliminar películas de las listas.
+
+## 🚀 Cómo ejecutar el proyecto
+
+Clona el repositorio:
+
+```
+git clone https://github.com/TU-USUARIO/tuki.git
+```
+
+Entra a la carpeta:
+
+```
+cd tuki
+```
+
+Crea el entorno virtual:
+
+```
+python -m venv .venv
+```
+
+Activa el entorno virtual en Linux:
+
+```
+source .venv/bin/activate
+```
+
+Instala las dependencias:
+
+```
+pip install -r requirements.txt
+```
+
+Realiza las migraciones:
+
+```
+python manage.py migrate
+```
+
+Inicia el servidor:
+
+```
+python manage.py runserver
+```
+
+Luego abre en el navegador:
+
+```
+http://127.0.0.1:8000
+```
+
+## 🎯 Objetivo del proyecto
+
+Tuki fue creado como un proyecto personal para practicar el desarrollo de aplicaciones web con Django.
+
+La idea principal fue hacer una aplicación sencilla y funcional para organizar mis películas sin agregar funciones innecesarias.
+
+## 👨‍💻 Autor
+
+Kevin Santiago Patiño
