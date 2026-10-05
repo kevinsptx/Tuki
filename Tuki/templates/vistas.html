@@ -1,0 +1,304 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}
+Vistas | Tuki
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    .pagina {
+        width: 100%;
+    }
+
+    .encabezado {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .encabezado h1 {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .encabezado p {
+        color: var(--gris);
+        font-size: 14px;
+    }
+
+    .btn-nuevo {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 17px;
+        border-radius: 7px;
+        background: var(--rojo);
+        color: white;
+        font-size: 13px;
+        font-weight: 700;
+        transition: 0.2s ease;
+    }
+
+    .btn-nuevo:hover {
+        background: var(--rojo-claro);
+        transform: translateY(-1px);
+    }
+
+    .lista {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 16px;
+    }
+
+    .pelicula {
+        background: var(--panel);
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        padding: 20px;
+        transition: border 0.2s ease, transform 0.2s ease;
+    }
+
+    .pelicula:hover {
+        border-color: #3a3a40;
+        transform: translateY(-2px);
+    }
+
+    .pelicula-titulo {
+        font-size: 19px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .informacion {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+
+    .dato {
+        padding: 5px 9px;
+        border-radius: 5px;
+        background: var(--campo);
+        color: #a7a7ae;
+        font-size: 11px;
+    }
+
+    .calificacion {
+        color: #ffffff;
+        font-weight: 700;
+    }
+
+    .comentario {
+        color: #92929a;
+        font-size: 13px;
+        line-height: 1.5;
+        margin-bottom: 18px;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 8px;
+        border-top: 1px solid var(--borde);
+        padding-top: 15px;
+    }
+
+    .btn-accion {
+        flex: 1;
+        text-align: center;
+        padding: 9px;
+        border-radius: 6px;
+        background: var(--campo);
+        color: #aaaab2;
+        font-size: 12px;
+        font-weight: 600;
+        transition: 0.2s ease;
+    }
+
+    .btn-accion:hover {
+        color: white;
+        background: #27272c;
+    }
+
+    .btn-eliminar:hover {
+        color: var(--rojo);
+    }
+
+    .vacio {
+        padding: 60px 20px;
+        text-align: center;
+        background: var(--panel);
+        border: 1px dashed var(--borde);
+        border-radius: 10px;
+    }
+
+    .vacio h2 {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .vacio p {
+        color: var(--gris);
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 600px) {
+
+        .encabezado {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .btn-nuevo {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .lista {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="pagina">
+
+```
+<div class="encabezado">
+
+    <div>
+
+        <h1>Películas vistas</h1>
+
+        <p>
+            Aquí tienes las películas que ya registraste como vistas.
+        </p>
+
+    </div>
+
+
+    <a href="{% url 'register_vista' %}" class="btn-nuevo">
+
+        + Registrar vista
+
+    </a>
+
+</div>
+
+
+{% if vistas %}
+
+    <div class="lista">
+
+        {% for vista in vistas %}
+
+            <div class="pelicula">
+
+
+                <div class="pelicula-titulo">
+
+                    {{ vista.pelicula }}
+
+                </div>
+
+
+                <div class="informacion">
+
+                    <span class="dato">
+
+                        {{ vista.fecha }}
+
+                    </span>
+
+
+                    {% if vista.calificacion %}
+
+                        <span class="dato calificacion">
+
+                            ★ {{ vista.calificacion }}/10
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                {% if vista.comentario %}
+
+                    <div class="comentario">
+
+                        {{ vista.comentario }}
+
+                    </div>
+
+                {% endif %}
+
+
+                <div class="acciones">
+
+                    <a
+                        href="{% url 'update_vista' vista.id %}"
+                        class="btn-accion"
+                    >
+
+                        Editar
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'delete_vista' vista.id %}"
+                        class="btn-accion btn-eliminar"
+                    >
+
+                        Eliminar
+
+                    </a>
+
+                </div>
+
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+
+{% else %}
+
+
+    <div class="vacio">
+
+        <h2>Aún no tienes películas vistas</h2>
+
+        <p>
+            Registra tu primera película para empezar tu historial.
+        </p>
+
+        <a href="{% url 'register_vista' %}" class="btn-nuevo">
+
+            Registrar primera vista
+
+        </a>
+
+    </div>
+
+
+{% endif %}
+
+</div>
+
+{% endblock %}
