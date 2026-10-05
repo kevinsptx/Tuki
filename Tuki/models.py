@@ -8,3 +8,9 @@ class Pelicula(models.Model):
 
     def __str__(self):
         return self.pelicula
+class Pendiente(models.Model):
+    pelicula=models.CharField(max_length=100)
+    fecha=models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.pelicula
